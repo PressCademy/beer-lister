@@ -2,13 +2,21 @@
  * External dependencies
  */
 import { unescape as unescapeString } from 'lodash';
+import * as BeerList from './blocks/BeerList';
 
 /**
  * WordPress dependencies
  */
-import {addFilter} from '@wordpress/hooks';
+import { addFilter } from '@wordpress/hooks';
+import { registerBlockType } from '@wordpress/blocks';
 
-addFilter( 'editor.PostTaxonomyType', 'my-custom-plugin', ( OriginalComponent ) => {
+// Register blocks.
+[BeerList].forEach( ( { name, settings } ) => {
+	registerBlockType( name, settings );
+} );
+
+// Customize post taxonomy to use radio buttons.
+addFilter( 'editor.PostTaxonomyType', 'beer-lister', ( OriginalComponent ) => {
 	return function ( props ) {
 		if ( props.slug === 'style' ) {
 			if ( !window.HierarchicalTermRadioSelector ) {

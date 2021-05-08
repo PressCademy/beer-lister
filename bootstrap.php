@@ -73,6 +73,7 @@ beer()->taxonomies()->add( 'taxonomy', [
 		'public'       => true,
 		'show_in_rest' => true,
 		'hierarchical' => true,
+		'query_var'    => true,
 		'rewrite'      => [ 'slug' => 'style' ],
 		'labels'       => [
 			'name'              => beer()->__( 'Styles' ),
@@ -90,7 +91,7 @@ beer()->taxonomies()->add( 'taxonomy', [
 	],
 ] );
 
-beer()->scripts()->add( 'scripts', [
+beer()->scripts()->add( 'admin_scripts', [
 	'handle'      => 'beer-editor',
 	'src'         => beer()->js_url() . 'admin.js',
 	'name'        => 'Beer Admin Script',
@@ -98,4 +99,12 @@ beer()->scripts()->add( 'scripts', [
 	'deps'        => beer()->dir() . 'build/admin.asset.php',
 ] );
 
-add_action( 'admin_enqueue_scripts', fn () => beer()->scripts()->enqueue( 'scripts' ) );
+add_action( 'admin_enqueue_scripts', fn () => beer()->scripts()->enqueue( 'admin_scripts' ) );
+
+beer()->blocks()->add( 'beer_list', [
+		'name'        => 'Beer List',
+		'description' => 'Displays a list of beers.',
+		'type'        => 'beer-list/beer-list', // See register_block_type
+		'args'        => [],                    // See register_block_type
+	]
+);
