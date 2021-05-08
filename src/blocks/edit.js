@@ -26,6 +26,7 @@ import { addQueryArgs } from "@wordpress/url";
 function BeerList( { attributes, setAttributes } ) {
 
 	const [beerList, setBeer] = useState( [] );
+	const [styles, setStyles] = useState( [] );
 	const [isLoading, setIsLoading] = useState( false );
 
 
@@ -54,6 +55,32 @@ function BeerList( { attributes, setAttributes } ) {
 		} );
 	}
 
+	const getStyles = () => {
+		return new Promise( async ( res, rej ) => {
+
+			const path = "/wp/v2/style";
+			const response = await apiFetch( {
+				path
+			} );
+
+			const items = response.map( ( style ) => {
+				return {
+					key: style.id,
+					value: style.id,
+					name: style.name
+				}
+			} )
+
+			// Shove the default value in-front.
+			items.unshift({
+				key: 0, value: false, name: 'Any Style'
+			});
+
+			setStyles( items );
+			res();
+		} );
+	}
+
 	const Beer = ( props ) => {
 		return (
 			<li>
@@ -77,20 +104,17 @@ function BeerList( { attributes, setAttributes } ) {
 
 	if ( false === isLoading ) {
 		getBeers();
+		getStyles();
 	}
 
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__( 'Style', 'beer-list' )}>
+				<PanelBody title={__( 'Filter Options', 'beer-list' )}>
 					<PanelRow>
 						<CustomSelectControl
 							label={__( 'Style', 'beer-list' )}
-							options={[
-								{ key: 'any', value: false, name: 'Any' },
-								{ key: 'stout', value: 2, name: 'Stout' },
-								{ key: 'ipa', value: 3, name: 'IPA' }
-							]}
+							options={styles}
 							onChange={( e ) => getBeers( { style: e.selectedItem.value } )}
 						/>
 					</PanelRow>
