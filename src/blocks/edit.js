@@ -7,10 +7,9 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import React, { useState } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
-import { CustomSelectControl, PanelBody, PanelRow, ColorPalette } from '@wordpress/components';
+import { CustomSelectControl, PanelBody, PanelRow, RangeControl, CheckboxControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { addQueryArgs } from "@wordpress/url";
-
 
 /**
  * Beer List.
@@ -28,8 +27,18 @@ function BeerList( { attributes, setAttributes } ) {
 	const [beerList, setBeer] = useState( [] );
 	const [styles, setStyles] = useState( [] );
 	const [isLoading, setIsLoading] = useState( false );
-	const [filter, setFilter] = useState( {} );
+	const [filter, setFilter] = useState( { srm: { min: 0, max: 0 }, abv: { min: 0, max: 0 }, ibu: { min: 0, max: 0 } } );
+	const [srmValues, setSrmValues] = useState( [] );
 
+	if ( !srmValues.length ) {
+		new Promise( async ( res, rej ) => {
+			const response = await apiFetch( {
+				path: '/beer-list/v1/srm'
+			} );
+
+			setSrmValues( response );
+		} );
+	}
 
 	const getBeers = ( args ) => {
 		new Promise( async ( res, rej ) => {
@@ -89,7 +98,7 @@ function BeerList( { attributes, setAttributes } ) {
 		} else {
 			return (
 				<ol>
-					{beerList.map( beer => <Beer beer={beer}/> )}
+					{beerList.map( beer => <Beer key={beer.id} beer={beer}/> )}
 				</ol>
 			);
 		}
@@ -97,7 +106,23 @@ function BeerList( { attributes, setAttributes } ) {
 
 	const updateFilter = ( args ) => {
 
+		args.srm = { ...filter.srm, ...args.srm };
+		args.abv = { ...filter.abv, ...args.abv };
+		args.ibu = { ...filter.ibu, ...args.ibu };
+
 		args = { ...filter, ...args }
+
+		if ( args.srm.min > args.srm.max ) {
+			args.srm.max = args.srm.min
+		}
+
+		if ( args.abv.min > args.abv.max ) {
+			args.abv.max = args.abv.min
+		}
+
+		if ( args.ibu.min > args.ibu.max ) {
+			args.ibu.max = args.ibu.min
+		}
 
 		if ( undefined !== args.style && false === args.style ) {
 			delete args.style;
@@ -115,7 +140,7 @@ function BeerList( { attributes, setAttributes } ) {
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__( 'Filter Options', 'beer-list' )}>
+				<PanelBody title={__( 'Filter Style', 'beer-list' )}>
 					<PanelRow>
 						<CustomSelectControl
 							label={__( 'Style', 'beer-list' )}
@@ -123,17 +148,64 @@ function BeerList( { attributes, setAttributes } ) {
 							onChange={( e ) => updateFilter( { style: e.selectedItem.value } )}
 						/>
 					</PanelRow>
+				</PanelBody>
+				<PanelBody title={__( 'Filter SRM', 'beer' )}>
 					<PanelRow>
-						<ColorPalette
-							title={__( 'Color', 'beer-list' )}
-							colors={[
-								{ name: 'red', color: '#f00' },
-								{ name: 'white', color: '#fff' },
-								{ name: 'blue', color: '#00f' },
-							]}
-							value={filter.color}
-							onChange={( color ) => updateFilter( { color } )}
-							disableCustomColors={true}
+						<RangeControl
+							label={__( "Minimum SRM Value", 'beer' )}
+							value={filter.srm.min}
+							onChange={( minSrm ) => updateFilter( { srm: { min: minSrm } } )}
+							min={1}
+							max={srmValues.length}
+						/>
+					</PanelRow>
+					<PanelRow>
+						<RangeControl
+							label={__( "Maximum SRM Value", 'beer' )}
+							value={filter.srm.max}
+							onChange={( maxSrm ) => updateFilter( { srm: { max: maxSrm } } )}
+							min={1}
+							max={srmValues.length}
+						/>
+					</PanelRow>
+				</PanelBody>
+				<PanelBody title={__( 'Filter ABV', 'beer-list' )}>
+					<PanelRow>
+						<RangeControl
+							label={__( "Minimum ABV Value", 'beer' )}
+							value={filter.abv.min}
+							onChange={( minAbv ) => updateFilter( { abv: { min: minAbv } } )}
+							min={1}
+							max={100}
+						/>
+					</PanelRow>
+					<PanelRow>
+						<RangeControl
+							label={__( "Maximum ABV Value", 'beer' )}
+							value={filter.abv.max}
+							onChange={( maxAbv ) => updateFilter( { abv: { max: maxAbv } } )}
+							min={1}
+							max={100}
+						/>
+					</PanelRow>
+				</PanelBody>
+				<PanelBody title={__( 'Filter IBU', 'beer-list' )}>
+					<PanelRow>
+						<RangeControl
+							label={__( "Minimum IBU Value", 'beer' )}
+							value={filter.ibu.min}
+							onChange={( minIbu ) => updateFilter( { ibu: { min: minIbu } } )}
+							min={1}
+							max={150}
+						/>
+					</PanelRow>
+					<PanelRow>
+						<RangeControl
+							label={__( "Maximum IBU Value", 'beer' )}
+							value={filter.ibu.max}
+							onChange={( maxIbu ) => updateFilter( { ibu: { max: maxIbu } } )}
+							min={1}
+							max={150}
 						/>
 					</PanelRow>
 				</PanelBody>
