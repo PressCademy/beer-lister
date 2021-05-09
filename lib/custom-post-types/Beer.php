@@ -94,6 +94,17 @@ class Beer extends Custom_Post_Type {
 
 	public function prepare_query_args( array $args ) {
 
+		if ( isset( $args['style'] ) && $args['style'] > 0 ) {
+			$args['tax_query'] = array(
+				array(
+					'taxonomy' => 'style',
+					'field'    => 'id',
+					'terms'    => $args['style'],
+				),
+			);
+			unset( $args['style'] );
+		}
+
 		// Add a meta query param if necessary.
 		if ( isset( $args['ibu'] ) || isset( $args['srm'] ) || isset( $args['abv'] ) ) {
 			$args['meta_query'] = [];
@@ -180,11 +191,11 @@ class Beer extends Custom_Post_Type {
 		/**
 		 * Setup IBU
 		 */
-		beer()->meta()->add( 'ibu', [
+		$this->add_meta_field( 'ibu', [
 			'description'       => 'The international bitterness units of a beer',
-			'name'              => 'ABV',
+			'name'              => 'IBU',
 			'default_value'     => 12,
-			'field_type'        => 'integer',
+			'field_type'        => 'number',
 			'sanitize_callback' => 'absint',
 		] );
 	}
@@ -193,7 +204,7 @@ class Beer extends Custom_Post_Type {
 		/**
 		 * Setup Taxonomies
 		 */
-		beer()->taxonomies()->add( 'taxonomy', [
+		beer()->taxonomies()->add( 'style', [
 			'post_type'   => $this->type,
 			'id'          => 'style',
 			'description' => 'Beer style',

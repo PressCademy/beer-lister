@@ -44,6 +44,22 @@ class Colors extends Loader_Registry {
 		}
 	}
 
+	public function beer_color( $id ) {
+		$srm   = (int) beer()->meta()->get( 'srm' )->get( $id, true );
+		$color = $this->filter( [ 'srm' => $srm ] );
+
+		if ( count( $color ) <= 0 ) {
+			return beer()->logger()->log_as_error(
+				'error',
+				'beer_color_not_found',
+				'The provided beer color could not be found',
+				[ 'srm' => $srm, 'id' => $id, 'found_colors' => $color ]
+			);
+		}
+
+		return array_pop( $color );
+	}
+
 	/**
 	 * Fetches a list of registered colors that have been used by any beer.
 	 *

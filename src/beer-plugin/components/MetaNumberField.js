@@ -4,7 +4,7 @@ import React, { useState } from '@wordpress/element';
 
 const MetaNumberField = ( props ) => {
 
-	const [meta, setMeta] = useState( select( 'core/editor' ).getEditedPostAttribute( 'meta' )[props.metaKey] );
+	const [meta, setMeta] = useState( select( 'core/editor' ).getEditedPostAttribute( 'meta' )[props.metaKey] || props.min );
 
 	const step = props.step || 1;
 
@@ -12,7 +12,7 @@ const MetaNumberField = ( props ) => {
 		let metaValue = e.target.value;
 
 		if ( metaValue > props.max ) {
-			metaValue = promps.max;
+			metaValue = props.max;
 		}
 
 		if ( metaValue < props.min ) {
@@ -31,7 +31,7 @@ const MetaNumberField = ( props ) => {
 	return (
 		<>
 			<label
-				style={{ 'display': 'block', "margin-bottom": '8px' }}
+				style={{ 'display': 'block', "marginBottom": '8px' }}
 				htmlFor={`beer-${props.metaKey}`}>
 				{props.label}
 			</label>

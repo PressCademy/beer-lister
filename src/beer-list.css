@@ -1,0 +1,29 @@
+.srm-icon {
+	width: 50px;
+	height: 50px;
+	display: block;
+	border-radius: 100%;
+	align-self: center;
+}
+
+.beer-wrapper article {
+	display: grid;
+	grid-template-columns: 100px auto;
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+	border-bottom: 3px solid black;
+}
+
+.beer-wrapper article:last-child {
+	border-bottom: none;
+}
+
+.beer-stats {
+	display: flex;
+	margin-top: 10px;
+}
+
+.beer-stats dd {
+	padding: 0;
+	margin: 0 25px 0 5px;
+}

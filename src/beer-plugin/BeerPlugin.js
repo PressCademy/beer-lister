@@ -39,6 +39,7 @@ function BeerPlugin() {
 					label={__( "IBU", 'beer' )}
 					description={__('The international bitterness units.','beer')}
 					min={0}
+					max={150}
 				/>
 			</PluginDocumentSettingPanel>
 		</>

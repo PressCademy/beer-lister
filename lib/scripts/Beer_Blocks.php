@@ -11,8 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Beer_Blocks extends Script {
 
-	protected $handle      = 'beer-blocks';
-	public    $name        = 'Beer Blocks Script';
+	protected $handle = 'beer-blocks';
+	public    $name   = 'Beer Blocks Script';
 	public    $description = 'Scripts specific to the registered blocks in the editor';
 
 	public function __construct() {
@@ -35,12 +35,6 @@ class Beer_Blocks extends Script {
 		/**
 		 * Setup Blocks
 		 */
-		beer()->blocks()->add( 'beer_list', [
-				'name'        => 'Beer List',
-				'description' => 'Displays a list of beers.',
-				'type'        => 'beer-list/beer-list',
-			]
-		);
+		beer()->blocks()->add( 'beer_list', 'Beer_List\Blocks\Beer_List' );
 	}
-
 }
