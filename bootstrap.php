@@ -150,10 +150,10 @@ beer()->meta()->add( 'srm', [
 	'has_permission_callback' => fn () => current_user_can( 'edit_posts' ),
 ] );
 
-beer()->rest_endpoints()->add( 'beer-colors', [
-	'endpoint_callback'       => fn ( \WP_REST_Request $request ) => beer()->colors(),
+beer()->rest_endpoints()->add( 'srm', [
+	'endpoint_callback'       => fn ( \WP_REST_Request $request ) => array_values( (array) beer()->colors() ),
 	'has_permission_callback' => '__return_true',
 	'rest_namespace'          => 'beer-list/v1',
-	'route'                   => 'colors',
+	'route'                   => 'srm',
 	'args'                    => [ 'methods' => 'GET' ],
 ] );

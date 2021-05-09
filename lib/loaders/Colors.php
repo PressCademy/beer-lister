@@ -38,9 +38,9 @@ class Colors extends Loader_Registry {
 			'#470001', '#450001', '#410004', '#3D0001', '#390001', '#360004', '#330001', '#300001', '#2E0401', '#2C0004',
 			'#200004' ];
 
-		foreach ( $colors as $key => $hex ) {
+		foreach ( $colors as $key => $color ) {
 			$srm = $key + 1;
-			$this->add( $srm, compact( 'srm', 'hex' ) );
+			$this->add( $srm, [ 'name' => "SRM value $srm", 'srm' => $srm, 'color' => $color ] );
 		}
 	}
 

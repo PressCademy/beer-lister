@@ -9,5 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Color {
 	public $srm;
-	public $hex;
+	public $color;
+	public $name;
 }
