@@ -47,12 +47,15 @@ const SRMValues = () => {
 	}
 
 	return (
-		<ColorPalette
-			colors={srmValues}
-			value={color}
-			disableCustomColors={true}
-			onChange={( color ) => updateColor( color )}
-		/>
+		<>
+			<ColorPalette
+				colors={srmValues}
+				value={color}
+				disableCustomColors={true}
+				onChange={( color ) => updateColor( color )}
+			/>
+			<p>Select the SRM value that most-closely represents the color of this beer.</p>
+		</>
 	);
 }
 
