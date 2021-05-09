@@ -23,6 +23,7 @@ function BeerPlugin() {
 					metaKey='abv'
 					min={0}
 					max={100}
+					step={.01}
 				/>
 			</PluginDocumentSettingPanel>
 			<PluginDocumentSettingPanel

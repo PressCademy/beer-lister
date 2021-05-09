@@ -25,7 +25,7 @@ const MetaNumberField = ( props ) => {
 
 		dispatch( 'core/editor' ).editPost( { meta: { ...meta, ...updated } } )
 
-		setMeta( meta );
+		setMeta( metaValue );
 	}
 
 	return (
