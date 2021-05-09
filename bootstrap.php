@@ -37,6 +37,9 @@ function beer() {
 	] )->get( __FILE__ );
 }
 
+/**
+ * Setup Custom Post Types
+ */
 beer()->custom_post_types()->add( 'beer', [
 	'type'        => 'beer',
 	'name'        => 'Beer',
@@ -64,6 +67,9 @@ beer()->custom_post_types()->add( 'beer', [
 	],
 ] );
 
+/**
+ * Setup Taxonomies
+ */
 beer()->taxonomies()->add( 'taxonomy', [
 	'post_type'   => 'beer',
 	'id'          => 'style',
@@ -91,6 +97,9 @@ beer()->taxonomies()->add( 'taxonomy', [
 	],
 ] );
 
+/**
+ * Setup Scripts
+ */
 beer()->scripts()->add( 'admin_scripts', [
 	'handle'      => 'beer-editor',
 	'src'         => beer()->js_url() . 'admin.js',
@@ -101,14 +110,20 @@ beer()->scripts()->add( 'admin_scripts', [
 
 add_action( 'admin_enqueue_scripts', fn () => beer()->scripts()->enqueue( 'admin_scripts' ) );
 
+/**
+ * Setup Blocks
+ */
 beer()->blocks()->add( 'beer_list', [
 		'name'        => 'Beer List',
 		'description' => 'Displays a list of beers.',
-		'type'        => 'beer-list/beer-list', // See register_block_type
-		'args'        => [],                    // See register_block_type
+		'type'        => 'beer-list/beer-list',
+		'args'        => [],
 	]
 );
 
+/**
+ * Setup Colors
+ */
 beer()->loaders()->add( 'colors', [
 	'registry' => 'Beer_List\Loaders\Colors',
 ] );
@@ -121,6 +136,10 @@ beer()->meta()->add( 'color', [
 	'type'          => 'post',
 ] );
 
-add_filter( 'the_content', function () {
-	var_dump( (array) beer()->colors() );
-} );
+beer()->rest_endpoints()->add( 'beer-colors', [
+	'endpoint_callback'       => fn ( \WP_REST_Request $request ) => beer()->colors(),
+	'has_permission_callback' => '__return_true',
+	'rest_namespace'          => 'beer-list/v1',
+	'route'                   => 'colors',
+	'args'                    => [ 'methods' => 'GET' ],
+] );
