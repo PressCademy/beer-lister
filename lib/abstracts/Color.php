@@ -8,6 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 class Color {
-	public $id;
+	public $srm;
 	public $hex;
 }

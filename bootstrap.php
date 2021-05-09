@@ -49,7 +49,7 @@ beer()->custom_post_types()->add( 'beer', [
 		'capability_type' => 'post',
 		'can_export'      => true,
 		'show_in_rest'    => true,
-		'supports'        => [ 'title', 'editor', 'excerpt', 'revisions', 'thumbnail' ],
+		'supports'        => [ 'title', 'editor', 'excerpt', 'revisions', 'thumbnail', 'custom-fields' ],
 		'labels'          => [
 			'name'               => beer()->__( 'Beers' ),
 			'singular_name'      => beer()->__( 'Beer' ),
@@ -128,12 +128,26 @@ beer()->loaders()->add( 'colors', [
 	'registry' => 'Beer_List\Loaders\Colors',
 ] );
 
-beer()->meta()->add( 'color', [
-	'key'           => 'color',
-	'description'   => 'The color of a beer',
-	'name'          => 'Color',
-	'default_value' => false,
-	'type'          => 'post',
+beer()->meta()->add( 'srm', [
+	'key'                     => 'srm',
+	'subtype'                 => 'beer',
+	'description'             => 'The SRM (color) of a beer',
+	'name'                    => 'SRM',
+	'default_value'           => 25,
+	'type'                    => 'post',
+	'show_in_rest'            => true,
+	'field_type'              => 'integer',
+	'single'                  => true,
+	'sanitize_callback'       => function ( $meta_value, $meta_key, $object_type ) {
+		$valid_color = ! empty( beer()->colors()->filter( [ 'srm' => $meta_value ] ) );
+
+		if ( true === $valid_color ) {
+			return $meta_value;
+		}
+
+		return $this->default_value;
+	},
+	'has_permission_callback' => fn () => current_user_can( 'edit_posts' ),
 ] );
 
 beer()->rest_endpoints()->add( 'beer-colors', [
