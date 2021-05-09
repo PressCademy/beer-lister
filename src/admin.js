@@ -3,16 +3,23 @@
  */
 import { unescape as unescapeString } from 'lodash';
 import * as BeerList from './blocks/BeerList';
+import * as BeerPlugin from './beer-plugin/BeerPlugin';
 
 /**
  * WordPress dependencies
  */
 import { addFilter } from '@wordpress/hooks';
 import { registerBlockType } from '@wordpress/blocks';
+import { registerPlugin } from '@wordpress/plugins';
 
 // Register blocks.
 [BeerList].forEach( ( { name, settings } ) => {
 	registerBlockType( name, settings );
+} );
+
+// Register customizations to beer document sidebar
+[BeerPlugin].forEach( ( { name, settings } ) => {
+	registerPlugin( name, settings );
 } );
 
 // Customize post taxonomy to use radio buttons.
