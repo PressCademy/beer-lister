@@ -38,8 +38,7 @@ $args = [ 'beer' => $beer, 'srm' => $srm, 'ibu' => $ibu, 'style' => $style->slug
 			<dt>IBU:</dt>
 			<dd><?= $ibu ?> </dd>
 			<dt>Style:</dt>
-			<dd><?= $style->name ?> </dd>
-
+			<dd><a href="<?= get_term_link( $style->term_id ) ?>"><?= $style->name ?></a></dd>
 		</dl>
 	</div>
 </article>
