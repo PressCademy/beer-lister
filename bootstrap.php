@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function beer() {
 	return Underpin::make_class( [
-		'root_namespace'      => 'Beer',
+		'root_namespace'      => 'Beer_List',
 		'text_domain'         => 'beer',
 		'minimum_php_version' => '7.0',
 		'minimum_wp_version'  => '5.1',
@@ -108,3 +108,19 @@ beer()->blocks()->add( 'beer_list', [
 		'args'        => [],                    // See register_block_type
 	]
 );
+
+beer()->loaders()->add( 'colors', [
+	'registry' => 'Beer_List\Loaders\Colors',
+] );
+
+beer()->meta()->add( 'color', [
+	'key'           => 'color',
+	'description'   => 'The color of a beer',
+	'name'          => 'Color',
+	'default_value' => false,
+	'type'          => 'post',
+] );
+
+add_filter( 'the_content', function () {
+	var_dump( (array) beer()->colors() );
+} );

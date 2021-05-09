@@ -7,7 +7,7 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import React, { useState } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
-import { CustomSelectControl, PanelBody, PanelRow } from '@wordpress/components';
+import { CustomSelectControl, PanelBody, PanelRow, ColorPalette } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { addQueryArgs } from "@wordpress/url";
 
@@ -28,21 +28,14 @@ function BeerList( { attributes, setAttributes } ) {
 	const [beerList, setBeer] = useState( [] );
 	const [styles, setStyles] = useState( [] );
 	const [isLoading, setIsLoading] = useState( false );
+	const [filter, setFilter] = useState( {} );
 
 
-	const getBeers = ( args = {} ) => {
+	const getBeers = ( args ) => {
 		new Promise( async ( res, rej ) => {
 			setIsLoading( 'loading' );
 
 			const url = 'wp/v2/beer';
-
-			args = Object.keys( args ).reduce( ( acc, key ) => {
-				if ( false !== args[key] ) {
-					acc[key] = args[key];
-				}
-
-				return acc;
-			}, {} );
 
 			const response = await apiFetch( {
 				path: addQueryArgs( url, args ),
@@ -72,9 +65,9 @@ function BeerList( { attributes, setAttributes } ) {
 			} )
 
 			// Shove the default value in-front.
-			items.unshift({
+			items.unshift( {
 				key: 0, value: false, name: 'Any Style'
-			});
+			} );
 
 			setStyles( items );
 			res();
@@ -85,7 +78,7 @@ function BeerList( { attributes, setAttributes } ) {
 		return (
 			<li>
 				<h3>{props.beer.title.rendered}</h3>
-				<em>{props.beer.excerpt.rendered}</em>
+				<span dangerouslySetInnerHTML={{ __html: props.beer.excerpt.rendered }}/>
 			</li>
 		)
 	};
@@ -102,6 +95,18 @@ function BeerList( { attributes, setAttributes } ) {
 		}
 	}
 
+	const updateFilter = ( args ) => {
+
+		args = { ...filter, ...args }
+
+		if ( undefined !== args.style && false === args.style ) {
+			delete args.style;
+		}
+
+		setFilter( args );
+		getBeers( args );
+	}
+
 	if ( false === isLoading ) {
 		getBeers();
 		getStyles();
@@ -115,7 +120,20 @@ function BeerList( { attributes, setAttributes } ) {
 						<CustomSelectControl
 							label={__( 'Style', 'beer-list' )}
 							options={styles}
-							onChange={( e ) => getBeers( { style: e.selectedItem.value } )}
+							onChange={( e ) => updateFilter( { style: e.selectedItem.value } )}
+						/>
+					</PanelRow>
+					<PanelRow>
+						<ColorPalette
+							title={__( 'Color', 'beer-list' )}
+							colors={[
+								{ name: 'red', color: '#f00' },
+								{ name: 'white', color: '#fff' },
+								{ name: 'blue', color: '#00f' },
+							]}
+							value={filter.color}
+							onChange={( color ) => updateFilter( { color } )}
+							disableCustomColors={true}
 						/>
 					</PanelRow>
 				</PanelBody>
