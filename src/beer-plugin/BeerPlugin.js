@@ -1,6 +1,7 @@
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import SRMValues from './components/SRMValues';
 import MetaNumberField from './components/MetaNumberField';
+import { __ } from '@wordpress/i18n'
 
 
 function BeerPlugin() {
@@ -21,6 +22,8 @@ function BeerPlugin() {
 			>
 				<MetaNumberField
 					metaKey='abv'
+					label={__( "ABV", 'beer' )}
+					description={__('The alcohol by volume value.','beer')}
 					min={0}
 					max={100}
 					step={.01}
@@ -33,6 +36,8 @@ function BeerPlugin() {
 			>
 				<MetaNumberField
 					metaKey='ibu'
+					label={__( "IBU", 'beer' )}
+					description={__('The international bitterness units.','beer')}
 					min={0}
 				/>
 			</PluginDocumentSettingPanel>

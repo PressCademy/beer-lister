@@ -29,7 +29,15 @@ const MetaNumberField = ( props ) => {
 	}
 
 	return (
-		<input onChange={handleChange} value={meta} type="number" step={step}/>
+		<div>
+			<label
+				style={{ 'display': 'block', "margin-bottom": '8px' }}
+				htmlFor={`beer-${props.metaKey}`}>
+				{props.label}
+			</label>
+			<input name={`beer-${props.metaKey}`} onChange={handleChange} value={meta} type="number" step={step}/>
+			<p>{props.description}</p>
+		</div>
 	)
 }
 
