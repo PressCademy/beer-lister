@@ -1,6 +1,6 @@
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import SRMValues from './components/SRMValues';
-import ABVField from './components/ABVField';
+import MetaNumberField from './components/MetaNumberField';
 
 
 function BeerPlugin() {
@@ -19,7 +19,11 @@ function BeerPlugin() {
 				title="ABV"
 				className="abv"
 			>
-				<ABVField/>
+				<MetaNumberField
+					metaKey={abv}
+					min={0}
+					max={100}
+				/>
 			</PluginDocumentSettingPanel>
 		</>
 	)
