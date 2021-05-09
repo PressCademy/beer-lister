@@ -49,7 +49,7 @@ beer()->custom_post_types()->add( 'beer', [
 		'capability_type' => 'post',
 		'can_export'      => true,
 		'show_in_rest'    => true,
-		'supports'        => [ 'title', 'editor', 'excerpt', 'revisions', 'thumbnail', 'custom-fields' ],
+		'supports'        => [ 'title', 'editor', 'excerpt', 'custom-fields' ],
 		'labels'          => [
 			'name'               => beer()->__( 'Beers' ),
 			'singular_name'      => beer()->__( 'Beer' ),

@@ -19,7 +19,7 @@ const SRMValues = () => {
 			setSrmValues( response );
 
 			const srm = response.find( ( srm ) => {
-				return srm.srm === wp.data.select( 'core/editor' ).getCurrentPostAttribute( 'meta' ).srm;
+				return srm.srm === select( 'core/editor' ).getCurrentPostAttribute( 'meta' ).srm;
 			} );
 
 			setColor( srm.color );

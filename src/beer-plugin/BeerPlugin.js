@@ -1,5 +1,6 @@
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import SRMValues from './components/SRMValues';
+import ABVField from './components/ABVField';
 
 
 function BeerPlugin() {
@@ -12,6 +13,13 @@ function BeerPlugin() {
 				className="beer-srm"
 			>
 				<SRMValues/>
+			</PluginDocumentSettingPanel>
+			<PluginDocumentSettingPanel
+				name="beer-abv"
+				title="ABV"
+				className="abv"
+			>
+				<ABVField/>
 			</PluginDocumentSettingPanel>
 		</>
 	)
