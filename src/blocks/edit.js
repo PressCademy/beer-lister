@@ -27,7 +27,7 @@ function BeerList( { attributes, setAttributes } ) {
 	const [beerList, setBeer] = useState( [] );
 	const [styles, setStyles] = useState( [] );
 	const [isLoading, setIsLoading] = useState( false );
-	const [filter, setFilter] = useState( { srm: { min: 0, max: 0 }, abv: { min: 0, max: 0 }, ibu: { min: 0, max: 0 } } );
+	const [filter, setFilter] = useState( { srm: { min: 0, max: 40 }, abv: { min: 0, max: 100 }, ibu: { min: 0, max: 150 } } );
 	const [srmValues, setSrmValues] = useState( [] );
 
 	if ( !srmValues.length ) {
@@ -129,6 +129,22 @@ function BeerList( { attributes, setAttributes } ) {
 		}
 
 		setFilter( args );
+
+		args = Object.keys( args ).reduce( ( acc, argument ) => {
+
+			// If we're working with any of these args, filter them out.
+			if ( ['abv', 'ibu', 'srm'].includes( argument ) ) {
+				const value = args[argument];
+				if ( value.min !== 0 || value.max !== 0 ) {
+					acc[argument] = value;
+				}
+			} else {
+				acc[argument] = args[argument];
+			}
+
+			return acc;
+		}, {} );
+
 		getBeers( args );
 	}
 
@@ -155,7 +171,7 @@ function BeerList( { attributes, setAttributes } ) {
 							label={__( "Minimum SRM Value", 'beer' )}
 							value={filter.srm.min}
 							onChange={( minSrm ) => updateFilter( { srm: { min: minSrm } } )}
-							min={1}
+							min={0}
 							max={srmValues.length}
 						/>
 					</PanelRow>
@@ -164,7 +180,7 @@ function BeerList( { attributes, setAttributes } ) {
 							label={__( "Maximum SRM Value", 'beer' )}
 							value={filter.srm.max}
 							onChange={( maxSrm ) => updateFilter( { srm: { max: maxSrm } } )}
-							min={1}
+							min={0}
 							max={srmValues.length}
 						/>
 					</PanelRow>
@@ -175,7 +191,7 @@ function BeerList( { attributes, setAttributes } ) {
 							label={__( "Minimum ABV Value", 'beer' )}
 							value={filter.abv.min}
 							onChange={( minAbv ) => updateFilter( { abv: { min: minAbv } } )}
-							min={1}
+							min={0}
 							max={100}
 						/>
 					</PanelRow>

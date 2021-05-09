@@ -44,38 +44,80 @@ class Beer extends Custom_Post_Type {
 		$this->setup_taxonomies();
 	}
 
-	private function setup_taxonomies() {
+	public function rest_query( $args, \WP_REST_Request $request ) {
 
-		/**
-		 * Setup Taxonomies
-		 */
-		beer()->taxonomies()->add( 'taxonomy', [
-			'post_type'   => $this->type,
-			'id'          => 'style',
-			'description' => 'Beer style',
-			'name'        => 'Styles',
-			'args'        => [
-				'public'       => true,
-				'show_in_rest' => true,
-				'hierarchical' => true,
-				'query_var'    => true,
-				'rewrite'      => [ 'slug' => 'style' ],
-				'labels'       => [
-					'name'              => beer()->__( 'Styles' ),
-					'singular_name'     => beer()->__( 'Style' ),
-					'search_items'      => beer()->__( 'Search Styles' ),
-					'all_items'         => beer()->__( 'All Styles' ),
-					'parent_item'       => beer()->__( 'Parent Style' ),
-					'parent_item_colon' => beer()->__( 'Parent Style:' ),
-					'edit_item'         => beer()->__( 'Edit Style' ),
-					'update_item'       => beer()->__( 'Update Style' ),
-					'add_new_item'      => beer()->__( 'Add New Style' ),
-					'new_item_name'     => beer()->__( 'New Beer Style' ),
-					'not_found'         => beer()->__( 'No styles found' ),
-				],
-			],
-		] );
+		$abv = $request->get_param( 'abv' );
 
+		if ( null !== $abv ) {
+			$args['abv'] = $abv;
+		}
+
+		$ibu = $request->get_param( 'ibu' );
+
+		if ( null !== $ibu ) {
+			$args['ibu'] = $ibu;
+		}
+
+		$srm = $request->get_param( 'srm' );
+
+		if ( null !== $srm ) {
+			$args['srm'] = $srm;
+		}
+
+		return parent::rest_query( $args, $request );
+	}
+
+	private function get_meta_query_arg( $key, $value ) {
+		$default = array( 'min' => 0, 'max' => 0 );
+
+		if ( is_array( $value ) ) {
+			$value = wp_parse_args( $value, $default );
+			$value = [ $value['min'], $value['max'] ];
+
+			$result = [
+				'key'     => $key,
+				'value'   => $value,
+				'type'    => 'numeric',
+				'compare' => 'BETWEEN',
+			];
+		} else {
+			$result = [
+				'key'     => $key,
+				'value'   => $value,
+				'type'    => 'numeric',
+				'compare' => '=',
+			];
+		}
+
+		return $result;
+	}
+
+	public function prepare_query_args( array $args ) {
+
+		// Add a meta query param if necessary.
+		if ( isset( $args['ibu'] ) || isset( $args['srm'] ) || isset( $args['abv'] ) ) {
+			$args['meta_query'] = [];
+		}
+
+		// Prepare IBU
+		if ( isset( $args['ibu'] ) ) {
+			$args['meta_query'][] = $this->get_meta_query_arg( 'ibu', $args['ibu'] );
+			unset( $args['ibu'] );
+		}
+
+		// Prepare ABV
+		if ( isset( $args['abv'] ) ) {
+			$args['meta_query'][] = $this->get_meta_query_arg( 'abv', $args['abv'] );
+			unset( $args['abv'] );
+		}
+
+		// Prepare SRM
+		if ( isset( $args['srm'] ) ) {
+			$args['meta_query'][] = $this->get_meta_query_arg( 'srm', $args['srm'] );
+			unset( $args['srm'] );
+		}
+
+		return parent::prepare_query_args( $args );
 	}
 
 	/**
@@ -129,22 +171,53 @@ class Beer extends Custom_Post_Type {
 		 * Setup ABV
 		 */
 		$this->add_meta_field( 'abv', [
-			'description'             => 'The alcohol by volume of a beer',
-			'name'                    => 'ABV',
-			'default_value'           => 12,
-			'field_type'              => 'number',
+			'description'   => 'The alcohol by volume of a beer',
+			'name'          => 'ABV',
+			'default_value' => 12,
+			'field_type'    => 'number',
 		] );
 
 		/**
 		 * Setup IBU
 		 */
 		beer()->meta()->add( 'ibu', [
-			'description'             => 'The international bitterness units of a beer',
-			'name'                    => 'ABV',
-			'default_value'           => 12,
-			'field_type'              => 'integer',
-			'sanitize_callback'       => 'absint',
+			'description'       => 'The international bitterness units of a beer',
+			'name'              => 'ABV',
+			'default_value'     => 12,
+			'field_type'        => 'integer',
+			'sanitize_callback' => 'absint',
 		] );
 	}
 
+	private function setup_taxonomies() {
+		/**
+		 * Setup Taxonomies
+		 */
+		beer()->taxonomies()->add( 'taxonomy', [
+			'post_type'   => $this->type,
+			'id'          => 'style',
+			'description' => 'Beer style',
+			'name'        => 'Styles',
+			'args'        => [
+				'public'       => true,
+				'show_in_rest' => true,
+				'hierarchical' => true,
+				'query_var'    => true,
+				'rewrite'      => [ 'slug' => 'style' ],
+				'labels'       => [
+					'name'              => beer()->__( 'Styles' ),
+					'singular_name'     => beer()->__( 'Style' ),
+					'search_items'      => beer()->__( 'Search Styles' ),
+					'all_items'         => beer()->__( 'All Styles' ),
+					'parent_item'       => beer()->__( 'Parent Style' ),
+					'parent_item_colon' => beer()->__( 'Parent Style:' ),
+					'edit_item'         => beer()->__( 'Edit Style' ),
+					'update_item'       => beer()->__( 'Update Style' ),
+					'add_new_item'      => beer()->__( 'Add New Style' ),
+					'new_item_name'     => beer()->__( 'New Beer Style' ),
+					'not_found'         => beer()->__( 'No styles found' ),
+				],
+			],
+		] );
+	}
 }
