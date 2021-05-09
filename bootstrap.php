@@ -46,17 +46,7 @@ beer()->custom_post_types()->add( 'beer', 'Beer_List\Custom_Post_Types\Beer' );
  * Setup Scripts
  */
 beer()->scripts()->add( 'admin_scripts', 'Beer_List\Scripts\Admin_Scripts' );
-
-/**
- * Setup Blocks
- */
-beer()->blocks()->add( 'beer_list', [
-		'name'        => 'Beer List',
-		'description' => 'Displays a list of beers.',
-		'type'        => 'beer-list/beer-list',
-		'args'        => [],
-	]
-);
+beer()->scripts()->add( 'beer_admin_blocks', 'Beer_List\Scripts\Beer_Blocks' );
 
 /**
  * Setup Colors
@@ -64,7 +54,6 @@ beer()->blocks()->add( 'beer_list', [
 beer()->loaders()->add( 'colors', [
 	'registry' => 'Beer_List\Loaders\Colors',
 ] );
-
 
 beer()->rest_endpoints()->add( 'srm', [
 	'endpoint_callback'       => fn ( \WP_REST_Request $request ) => array_values( (array) beer()->colors() ),

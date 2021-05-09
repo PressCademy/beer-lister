@@ -13,6 +13,7 @@ module.exports = {
 	...{
 		entry: {
 			admin: path.resolve( process.cwd(), 'src', 'admin.js' ),
+			"beer-admin": path.resolve( process.cwd(), 'src', 'beer-admin.js' ),
 		},
 	}
 }

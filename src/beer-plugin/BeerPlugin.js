@@ -2,15 +2,9 @@ import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import SRMValues from './components/SRMValues';
 import MetaNumberField from './components/MetaNumberField';
 import { __ } from '@wordpress/i18n'
-import { select } from '@wordpress/data';
 
 
 function BeerPlugin() {
-
-	// Do nothing with this plugin if this post type is anything but beer
-	if(select( 'core/editor' ).getEditedPostAttribute( 'type' ) !== 'beer'){
-		return <></>
-	}
 
 	return (
 		<>
