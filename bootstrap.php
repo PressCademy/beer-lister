@@ -100,15 +100,7 @@ beer()->taxonomies()->add( 'taxonomy', [
 /**
  * Setup Scripts
  */
-beer()->scripts()->add( 'admin_scripts', [
-	'handle'      => 'beer-editor',
-	'src'         => beer()->js_url() . 'admin.js',
-	'name'        => 'Beer Admin Script',
-	'description' => 'Scripts specific to the block editor',
-	'deps'        => beer()->dir() . 'build/admin.asset.php',
-] );
-
-add_action( 'admin_enqueue_scripts', fn () => beer()->scripts()->enqueue( 'admin_scripts' ) );
+beer()->scripts()->add( 'admin_scripts', 'Beer_List\Scripts\Admin_Scripts' );
 
 /**
  * Setup Blocks
