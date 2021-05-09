@@ -3,7 +3,7 @@
  */
 import { unescape as unescapeString } from 'lodash';
 import * as BeerList from './blocks/BeerList';
-import * as BeerPlugin from './beer-plugin/BeerPlugin';
+import BeerPlugin from './beer-plugin/BeerPlugin';
 
 /**
  * WordPress dependencies
@@ -18,9 +18,7 @@ import { registerPlugin } from '@wordpress/plugins';
 } );
 
 // Register customizations to beer document sidebar
-[BeerPlugin].forEach( ( { name, settings } ) => {
-	registerPlugin( name, settings );
-} );
+registerPlugin( 'beer-list', { render: BeerPlugin } );
 
 // Customize post taxonomy to use radio buttons.
 addFilter( 'editor.PostTaxonomyType', 'beer-lister', ( OriginalComponent ) => {

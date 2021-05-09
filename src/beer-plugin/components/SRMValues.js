@@ -1,5 +1,4 @@
-import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
-import { ColorPalette, PanelRow } from '@wordpress/components';
+import { ColorPalette } from '@wordpress/components';
 import React, { useState } from '@wordpress/element';
 import { select, dispatch } from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
@@ -31,7 +30,12 @@ const SRMValues = () => {
 	}
 
 	function updateColor( color ) {
-		const colorObject = srmValues.find( colorObject => color === colorObject.color );
+		let colorObject = srmValues.find( colorObject => color === colorObject.color );
+
+		// Fallback to a default color when-cleared.
+		if ( !colorObject ) {
+			colorObject = srmValues[14];
+		}
 
 		dispatch( 'core/editor' ).editPost( { meta: { ...meta, ...{ srm: colorObject.srm } } } )
 		setColor( colorObject.color );
@@ -43,25 +47,13 @@ const SRMValues = () => {
 	}
 
 	return (
-			<ColorPalette
-				colors={srmValues}
-				value={color}
-				onChange={( color ) => updateColor( color )}
-			/>
+		<ColorPalette
+			colors={srmValues}
+			value={color}
+			disableCustomColors={true}
+			onChange={( color ) => updateColor( color )}
+		/>
 	);
 }
 
-function BeerData() {
-
-	return (
-		<PluginDocumentSettingPanel
-			name="beer-srm"
-			title="SRM (color)"
-			className="beer-srm"
-		>
-				<SRMValues/>
-		</PluginDocumentSettingPanel>
-	)
-}
-
-export default BeerData
+export default SRMValues;

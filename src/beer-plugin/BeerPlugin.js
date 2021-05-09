@@ -1,7 +1,20 @@
-import render from './component';
+import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
+import SRMValues from './components/SRMValues';
 
-const name = 'beer-list';
 
-const settings = { render }
+function BeerPlugin() {
 
-export { name, settings };
+	return (
+		<>
+			<PluginDocumentSettingPanel
+				name="beer-srm"
+				title="SRM (color)"
+				className="beer-srm"
+			>
+				<SRMValues/>
+			</PluginDocumentSettingPanel>
+		</>
+	)
+}
+
+export default BeerPlugin

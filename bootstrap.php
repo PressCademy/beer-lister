@@ -157,3 +157,36 @@ beer()->rest_endpoints()->add( 'srm', [
 	'route'                   => 'srm',
 	'args'                    => [ 'methods' => 'GET' ],
 ] );
+
+/**
+ * Setup ABV
+ */
+beer()->meta()->add('abv', [
+	'key'                     => 'abv',
+	'subtype'                 => 'beer',
+	'description'             => 'The alcohol by volume of a beer',
+	'name'                    => 'ABV',
+	'default_value'           => 12,
+	'type'                    => 'post',
+	'show_in_rest'            => true,
+	'field_type'              => 'number',
+	'single'                  => true,
+	'has_permission_callback' => fn () => current_user_can( 'edit_posts' ),
+] );
+
+/**
+ * Setup IBU
+ */
+beer()->meta()->add('ibu', [
+	'key'                     => 'ibu',
+	'subtype'                 => 'beer',
+	'description'             => 'The international bitterness units of a beer',
+	'name'                    => 'ABV',
+	'default_value'           => 12,
+	'type'                    => 'post',
+	'show_in_rest'            => true,
+	'field_type'              => 'integer',
+	'single'                  => true,
+	'sanitize_callback'       => 'absint',
+	'has_permission_callback' => fn () => current_user_can( 'edit_posts' ),
+] );
