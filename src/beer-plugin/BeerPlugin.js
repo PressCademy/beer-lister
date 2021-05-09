@@ -20,9 +20,19 @@ function BeerPlugin() {
 				className="abv"
 			>
 				<MetaNumberField
-					metaKey={abv}
+					metaKey='abv'
 					min={0}
 					max={100}
+				/>
+			</PluginDocumentSettingPanel>
+			<PluginDocumentSettingPanel
+				name="beer-ibu"
+				title="IBU"
+				className="ibu"
+			>
+				<MetaNumberField
+					metaKey='ibu'
+					min={0}
 				/>
 			</PluginDocumentSettingPanel>
 		</>
