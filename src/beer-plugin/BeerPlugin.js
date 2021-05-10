@@ -43,7 +43,7 @@ function BeerPlugin() {
 					label={__( "ABV", 'beer' )}
 					description={__( 'The alcohol by volume value.', 'beer' )}
 					min={0}
-					max={100}
+					max={20}
 					step={.01}
 				/>
 			</PluginDocumentSettingPanel>

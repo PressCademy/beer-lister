@@ -175,7 +175,7 @@ function BeerList( { attributes, setAttributes } ) {
 							value={attributes.abv.min}
 							onChange={( minAbv ) => updateFilter( { abv: { min: minAbv } } )}
 							min={0}
-							max={100}
+							max={20}
 						/>
 					</PanelRow>
 					<PanelRow>
@@ -184,7 +184,7 @@ function BeerList( { attributes, setAttributes } ) {
 							value={attributes.abv.max}
 							onChange={( maxAbv ) => updateFilter( { abv: { max: maxAbv } } )}
 							min={1}
-							max={100}
+							max={20}
 						/>
 					</PanelRow>
 				</PanelBody>

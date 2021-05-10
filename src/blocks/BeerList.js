@@ -21,7 +21,7 @@ const settings = {
 	attributes: {
 		abv: {
 			type: 'object',
-			default: { min: 0, max: 100 }
+			default: { min: 0, max: 20 }
 		},
 		ibu: {
 			type: 'object',
