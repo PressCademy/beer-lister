@@ -47,6 +47,9 @@ class Beer_List extends Block {
 				'meta_key'       => [
 					'type' => 'string',
 				],
+				'on_tap'         => [
+					'type' => 'boolean',
+				],
 			],
 		];
 		parent::__construct();

@@ -50,6 +50,10 @@ const settings = {
 		meta_key: {
 			type: 'string',
 			default: ''
+		},
+		on_tap: {
+			type: 'boolean',
+			default: false
 		}
 	},
 	keywords: [

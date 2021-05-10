@@ -44,29 +44,6 @@ class Beer extends Custom_Post_Type {
 		$this->setup_taxonomies();
 	}
 
-	public function rest_query( $args, \WP_REST_Request $request ) {
-
-		$abv = $request->get_param( 'abv' );
-
-		if ( null !== $abv ) {
-			$args['abv'] = $abv;
-		}
-
-		$ibu = $request->get_param( 'ibu' );
-
-		if ( null !== $ibu ) {
-			$args['ibu'] = $ibu;
-		}
-
-		$srm = $request->get_param( 'srm' );
-
-		if ( null !== $srm ) {
-			$args['srm'] = $srm;
-		}
-
-		return parent::rest_query( $args, $request );
-	}
-
 	private function get_meta_query_arg( $key, $value ) {
 		$default = array( 'min' => 0, 'max' => 0 );
 
@@ -126,6 +103,17 @@ class Beer extends Custom_Post_Type {
 		if ( isset( $args['srm'] ) ) {
 			$args['meta_query'][] = $this->get_meta_query_arg( 'srm', $args['srm'] );
 			unset( $args['srm'] );
+		}
+
+		// Prepare On Tap
+		if ( isset( $args['on_tap'] ) && true === $args['on_tap'] ) {
+			$args['meta_query'][] = [
+				'key'     => 'on_tap',
+				'value'   => true,
+				'compare' => '=',
+			];
+
+			unset( $args['on_tap'] );
 		}
 
 		return parent::prepare_query_args( $args );
@@ -198,6 +186,18 @@ class Beer extends Custom_Post_Type {
 			'field_type'        => 'number',
 			'sanitize_callback' => 'absint',
 		] );
+
+		/**
+		 * Setup IBU
+		 */
+		$this->add_meta_field( 'on_tap', [
+			'description'       => 'Specifies if this beer is on-tap now, or not.',
+			'name'              => 'On Tap',
+			'default_value'     => false,
+			'field_type'        => 'boolean',
+			'sanitize_callback' => fn ( $meta_value ) => settype( $meta_value, 'boolean' ),
+		] );
+
 	}
 
 	private function setup_taxonomies() {

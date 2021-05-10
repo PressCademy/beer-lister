@@ -7,8 +7,16 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import React, { useState } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
-import { CustomSelectControl, PanelBody, PanelRow, RangeControl, ServerSideRender } from '@wordpress/components';
+import {
+	CustomSelectControl,
+	PanelBody,
+	PanelRow,
+	RangeControl,
+	ServerSideRender,
+	ToggleControl
+} from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
+import { withState } from '@wordpress/compose';
 
 /**
  * Beer List.
@@ -36,6 +44,22 @@ function BeerList( { attributes, setAttributes } ) {
 			setSrmValues( response );
 		} );
 	}
+
+	const OnTap = withState( {
+		on_tap: attributes.on_tap || false,
+	} )( ( { on_tap, setState } ) => (
+		<ToggleControl
+			metaKey='on_tap'
+			label={__( "On Tap", 'beer' )}
+			help={__( 'Filter to only display beers that are on-tap?', 'beer' )}
+			checked={on_tap}
+			onChange={( on_tap ) => {
+				setState( { on_tap } );
+				updateFilter( { on_tap } );
+			}}
+		/>
+	) );
+
 
 	const getStyles = () => {
 		return new Promise( async ( res, rej ) => {
@@ -182,6 +206,11 @@ function BeerList( { attributes, setAttributes } ) {
 							min={1}
 							max={150}
 						/>
+					</PanelRow>
+				</PanelBody>
+				<PanelBody title={__( 'On Tap?', 'beer-list' )}>
+					<PanelRow>
+						<OnTap/>
 					</PanelRow>
 				</PanelBody>
 				<PanelBody title={__( 'Sort By', 'beer-list' )}>
