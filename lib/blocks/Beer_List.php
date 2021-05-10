@@ -71,7 +71,7 @@ class Beer_List extends Block {
 
 	public function render( $params ) {
 		beer()->styles()->get( 'beer_list' )->enqueue();
-		$beers = beer()->custom_post_types()->get( 'beer' )->query( $params );
+		$beers = get_beers( $params );
 		$args  = [ 'beers' => $beers->posts ];
 
 		if ( isset( $params['className'] ) ) {

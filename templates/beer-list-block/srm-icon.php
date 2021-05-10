@@ -11,7 +11,7 @@ if ( ! isset( $template ) ||
 }
 
 $beer  = $template->get_param( 'beer' );
-$color = beer()->colors()->beer_color( $beer->ID );
+$color = get_beer_color( $beer->ID );
 
 // If the color could not be found, just return an empty string.
 if ( ! $color instanceof \Beer_List\Abstracts\Color ) {

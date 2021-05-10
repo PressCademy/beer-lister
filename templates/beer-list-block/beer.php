@@ -12,20 +12,19 @@ if ( ! isset( $template ) ||
 
 $beer = $template->get_param( 'beer' );
 
-$srm   = beer()->meta()->get( 'srm' )->get( $beer->ID, true );
-$ibu   = beer()->meta()->get( 'ibu' )->get( $beer->ID, true );
-$abv   = beer()->meta()->get( 'abv' )->get( $beer->ID, true );
-$style = wp_get_post_terms( $beer->ID, 'style' );
+$srm   = get_beer_srm( $beer->ID );
+$ibu   = get_beer_ibu( $beer->ID );
+$abv   = get_beer_abv( $beer->ID );
+$style = get_beer_style( $beer->ID );
 
-if ( empty( $style ) ) {
+if ( is_wp_error( $style ) ) {
 	$style       = '';
 	$style_class = '';
 } else {
-	$style       = $style[0];
 	$style_class = $style->slug;
 }
 
-$args = [ 'beer' => $beer, 'srm' => $srm, 'ibu' => $ibu, 'style' => $style->slug ];
+$args = [ 'beer' => $beer, 'srm' => $srm, 'ibu' => $ibu, 'style' => $style ];
 ?>
 <article class="srm-<?= $srm ?> ibu-<?= $ibu ?> style-<?= $style_class ?>">
 	<?= $template->get_template( 'srm-icon', $args ) ?>
@@ -37,8 +36,10 @@ $args = [ 'beer' => $beer, 'srm' => $srm, 'ibu' => $ibu, 'style' => $style->slug
 			<dd><?= $abv ?>%</dd>
 			<dt>IBU:</dt>
 			<dd><?= $ibu ?> </dd>
-			<dt>Style:</dt>
-			<dd><a href="<?= get_term_link( $style->term_id ) ?>"><?= $style->name ?></a></dd>
+			<?php if ( ! is_wp_error( $style ) ): ?>
+				<dt>Style:</dt>
+				<dd><a href="<?= get_term_link( $style->term_id ) ?>"><?= $style->name ?></a></dd>
+			<?php endif; ?>
 		</dl>
 	</div>
 </article>

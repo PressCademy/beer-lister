@@ -2,6 +2,7 @@
 
 namespace Beer_List\Loaders;
 
+use Beer_List\Abstracts\Color;
 use Underpin\Abstracts\Registries\Loader_Registry;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -45,15 +46,18 @@ class Colors extends Loader_Registry {
 	}
 
 	public function beer_color( $id ) {
-		$srm   = (int) beer()->meta()->get( 'srm' )->get( $id, true );
+		return $this->get_srm_color( get_beer_srm( $id ) );
+	}
+
+	public function get_srm_color( $srm ) {
 		$color = $this->filter( [ 'srm' => $srm ] );
 
 		if ( count( $color ) <= 0 ) {
 			return beer()->logger()->log_as_error(
 				'error',
 				'beer_color_not_found',
-				'The provided beer color could not be found',
-				[ 'srm' => $srm, 'id' => $id, 'found_colors' => $color ]
+				'The provided srm color could not be found',
+				[ 'srm' => $srm, 'found_colors' => $color ]
 			);
 		}
 
@@ -61,34 +65,12 @@ class Colors extends Loader_Registry {
 	}
 
 	/**
-	 * Fetches a list of registered colors that have been used by any beer.
+	 * @param string $key
 	 *
-	 * @since 1.0.0
-	 *
-	 * @return array List of colors that have been used by any beer.
+	 * @return Color|\WP_Error
 	 */
-	public function get_used_colors() {
-
-		// First, retrieve the list of beers that have a color set.
-		$beers = beer()->custom_post_types()->get( 'beer' )->query( [
-			'posts_per_page' => -1,
-			'fields'         => 'ids',
-			'meta_query'     => [
-				[
-					'key'     => 'color',
-					'compare' => 'EXISTS',
-				],
-			],
-		] );
-
-		// Next, retrieve the color for each of these fields.
-		$colors = [];
-		foreach ( $beers as $beer_id ) {
-			$colors[] = beer()->meta()->get_meta( 'color', $beer_id );
-		}
-
-		// Finally, filter our color objects for colors that are set.
-		return $this->filter( [ 'color__in' => array_unique( $colors ) ] );
+	public function get( $key ) {
+		return parent::get( $key );
 	}
 
 }
