@@ -34,6 +34,22 @@ const settings = {
 		style: {
 			type: 'integer',
 			default: 0
+		},
+		posts_per_page: {
+			type: 'integer',
+			default: -1
+		},
+		order:{
+			type: 'string',
+			default: 'ASC',
+		},
+		orderby: {
+			type: 'string',
+			default: ''
+		},
+		meta_key: {
+			type: 'string',
+			default: ''
 		}
 	},
 	keywords: [

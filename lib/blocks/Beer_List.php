@@ -23,17 +23,29 @@ class Beer_List extends Block {
 			'render_callback' => [ $this, 'render' ],
 			'style'           => 'beer-list-style',
 			'attributes'      => [
-				'srm'   => [
+				'srm'            => [
 					'type' => 'object',
 				],
-				'abv'   => [
+				'abv'            => [
 					'type' => 'object',
 				],
-				'ibu'   => [
+				'ibu'            => [
 					'type' => 'object',
 				],
-				'style' => [
+				'style'          => [
 					'type' => 'integer',
+				],
+				'posts_per_page' => [
+					'type' => 'integer',
+				],
+				'order'          => [
+					'type' => 'string',
+				],
+				'orderby'        => [
+					'type' => 'string',
+				],
+				'meta_key'       => [
+					'type' => 'string',
 				],
 			],
 		];

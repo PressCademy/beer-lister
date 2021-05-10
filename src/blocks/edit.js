@@ -40,7 +40,7 @@ function BeerList( { attributes, setAttributes } ) {
 	const getStyles = () => {
 		return new Promise( async ( res, rej ) => {
 
-			const path = "/wp/v2/style";
+			const path = "/wp/v2/style?per_page=-1";
 			const response = await apiFetch( {
 				path
 			} );
@@ -49,7 +49,7 @@ function BeerList( { attributes, setAttributes } ) {
 				return {
 					key: style.id,
 					value: style.id,
-					name: style.name
+					name: style.name,
 				}
 			} )
 
@@ -179,6 +179,45 @@ function BeerList( { attributes, setAttributes } ) {
 							onChange={( maxIbu ) => updateFilter( { ibu: { max: maxIbu } } )}
 							min={1}
 							max={150}
+						/>
+					</PanelRow>
+				</PanelBody>
+				<PanelBody title={__( 'Sort By', 'beer-list' )}>
+					<PanelRow>
+						<CustomSelectControl
+							label={__( 'Sort By', 'beer-list' )}
+							options={[
+								{ key: 'abv', value: 'abv', name: __( 'ABV', 'beer-list' ) },
+								{ key: 'ibu', value: 'ibu', name: __( 'IBU', 'beer-list' ) },
+								{ key: 'srm', value: 'srm', name: __( 'SRM', 'beer-list' ) },
+								{ key: 'post_title', value: 'post_title', name: __( 'Title', 'beer-list' ) }
+							]}
+							onChange={( e ) => {
+								const update = {};
+								const value = e.selectedItem.value
+
+								if ( ['abv', 'ibu', 'srm'].includes( value ) ) {
+									update.meta_key = value;
+									update.orderby = 'meta_value';
+								} else {
+									update.meta_key = '';
+									update.orderby = value;
+								}
+
+								return updateFilter( update );
+							}}
+						/>
+					</PanelRow>
+				</PanelBody>
+				<PanelBody title={__( 'Sort', 'beer-list' )}>
+					<PanelRow>
+						<CustomSelectControl
+							label={__( 'Sort By', 'beer-list' )}
+							options={[
+								{ key: 'ASC', value: 'ASC', name: __( 'Ascending', 'beer-list' ) },
+								{ key: 'DESC', value: 'DESC', name: __( 'Descending', 'beer-list' ) }
+							]}
+							onChange={e => updateFilter( { order: e.selectedItem.value } )}
 						/>
 					</PanelRow>
 				</PanelBody>
