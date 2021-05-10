@@ -34,7 +34,7 @@ $args = [ 'beer' => $beer, 'srm' => $srm, 'ibu' => $ibu, 'style' => $style->slug
 		<em><?= get_the_excerpt( $beer ) ?></em>
 		<dl class="beer-stats">
 			<dt>ABV:</dt>
-			<dd><?= $abv ?> </dd>
+			<dd><?= $abv ?>%</dd>
 			<dt>IBU:</dt>
 			<dd><?= $ibu ?> </dd>
 			<dt>Style:</dt>
