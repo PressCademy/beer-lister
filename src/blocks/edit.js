@@ -87,6 +87,8 @@ function BeerList( { attributes, setAttributes } ) {
 			delete args.style;
 		}
 
+		args.posts_per_page = -1;
+
 		setAttributes( args );
 
 		args = Object.keys( args ).reduce( ( acc, argument ) => {
