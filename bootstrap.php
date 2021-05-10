@@ -156,7 +156,7 @@ add_filter( 'the_content', function () {
 			'post_status'  => 'publish',
 			'tax_input'    => [ 'style' => $faker->randomElement( $styles ) ],
 			'meta_input'   => [
-				'srm' => $faker->numberBetween( 1, 50 ),   // Generate a random integer between 1 and 50
+				'srm' => $faker->numberBetween( 1, 40 ),   // Generate a random integer between 1 and 50
 				'abv' => $faker->randomFloat( 2, 1, 15 ),  // Generate a random float between 1 and 15
 				'ibu' => $faker->numberBetween( 10, 120 ), // Generate a random integer between 10 and 120
 			],
