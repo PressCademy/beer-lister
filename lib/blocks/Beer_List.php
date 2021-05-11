@@ -85,15 +85,19 @@ class Beer_List extends Block {
 
 	public function get_templates() {
 		return [
-			'wrapper'  => 'public',
-			'beer'     => 'public',
-			'no-beer'  => 'public',
-			'srm-icon' => 'public',
+			'wrapper'  => [ 'override_visibility' => 'public' ],
+			'beer'     => [ 'override_visibility' => 'public' ],
+			'no-beer'  => [ 'override_visibility' => 'public' ],
+			'srm-icon' => [ 'override_visibility' => 'public' ],
 		];
 	}
 
 	protected function get_template_group() {
 		return 'beer-list-block';
+	}
+
+	protected function get_override_dir() {
+		return 'beer-list';
 	}
 
 	protected function get_template_root_path() {
