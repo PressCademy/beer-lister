@@ -22,10 +22,10 @@
     "underpin/meta-loader": "^1.0",
     "underpin/rest-endpoint-loader": "^1.0",
     "underpin/style-loader": "^1.0",
+    "fakerphp/faker": "^1.5",
     "underpin/debug-bar-extension": "^1.0"
   },
   "require-dev": {
-    "fakerphp/faker": "^1.5",
     "underpin/compiler": "^0.1.0"
   }
 }
