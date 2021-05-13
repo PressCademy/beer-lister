@@ -2,7 +2,7 @@
 
 namespace Beer_List\Scripts;
 
-use Underpin_Scripts\Abstracts\Script;
+use Beercore_Scripts\Abstracts\Script;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -26,7 +26,9 @@ class Admin_Scripts extends Script {
 		parent::do_actions();
 
 		// Enqueue this script on the admin.
-		add_action( 'admin_enqueue_scripts', fn () => $this->enqueue() );
+		add_action( 'admin_enqueue_scripts', function () {
+			return $this->enqueue();
+		} );
 	}
 
 }

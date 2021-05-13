@@ -12,17 +12,20 @@ Author URI: https://www.designframesolutions.com
 */
 
 use Beer_List\Beer;
-use Underpin\Abstracts\Underpin;
+use Beercore\Abstracts\Beercore;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+require_once( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' );
+
 // If the beer exists, log an error, add an admin notice, and bail.
 if ( function_exists( 'beer' ) ) {
-	\Underpin\underpin()->logger()->log(
-		'error',
+	\Beercore\Beercore()->logger()->log(
+		'critical',
 		'beer_plugin_conflict',
-		'The beer plugin could not be set up - another plugin has declared a beer function.',
+		'The beer plugin could not be set up - another plugin has declared a beer function.'
 	);
 } else {
 
@@ -37,7 +40,7 @@ if ( function_exists( 'beer' ) ) {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return \Beer_List\Beer|Underpin The bootstrap for this plugin.
+	 * @return \Beer_List\Beer|Beercore The bootstrap for this plugin.
 	 */
 	function beer() {
 		return ( new Beer() )->get( __FILE__ );

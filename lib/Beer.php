@@ -7,12 +7,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Beer_List\Loaders\Colors;
-use Underpin\Abstracts\Underpin;
-use Underpin\Factories\Loader_Registry_Item;
-use Underpin_Blocks\Loaders\Blocks;
-use Underpin_Meta\Loaders\Meta;
-use Underpin_Scripts\Loaders\Scripts;
-use Underpin_Styles\Loaders\Styles;
+use Beercore\Abstracts\Beercore;
+use Beercore\Factories\Loader_Registry_Item;
+use Beercore_Blocks\Loaders\Blocks;
+use Beercore_Meta\Loaders\Meta;
+use Beercore_Scripts\Loaders\Scripts;
+use Beercore_Styles\Loaders\Styles;
 
 /**
  * Class Beer_Plugin_Instance
@@ -29,7 +29,7 @@ use Underpin_Styles\Loaders\Styles;
  * @method Meta meta
  * @method Colors colors
  */
-class Beer extends Underpin {
+class Beer extends Beercore {
 
 	public $root_namespace      = 'Beer_List';
 	public $text_domain         = 'beer';
@@ -57,7 +57,9 @@ class Beer extends Underpin {
 		] );
 
 		$this->rest_endpoints()->add( 'srm', [
-			'endpoint_callback'       => fn ( \WP_REST_Request $request ) => array_values( get_beer_colors() ),
+			'endpoint_callback'       => function ( \WP_REST_Request $request ) {
+				return array_values( get_beer_colors() );
+			},
 			'has_permission_callback' => '__return_true',
 			'rest_namespace'          => 'beer-list/v1',
 			'route'                   => 'srm',

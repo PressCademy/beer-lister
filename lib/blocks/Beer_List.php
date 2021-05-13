@@ -2,8 +2,8 @@
 
 namespace Beer_List\Blocks;
 
-use Underpin\Traits\Templates;
-use Underpin_Blocks\Abstracts\Block;
+use Beercore\Traits\Templates;
+use Beercore_Blocks\Abstracts\Block;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

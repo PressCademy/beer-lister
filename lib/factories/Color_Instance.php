@@ -3,7 +3,7 @@
 namespace Beer_List\Factories;
 
 use Beer_List\Abstracts\Color;
-use Underpin\Traits\Instance_Setter;
+use Beercore\Traits\Instance_Setter;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

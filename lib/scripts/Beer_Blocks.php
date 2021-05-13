@@ -2,7 +2,7 @@
 
 namespace Beer_List\Scripts;
 
-use Underpin_Scripts\Abstracts\Script;
+use Beercore_Scripts\Abstracts\Script;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

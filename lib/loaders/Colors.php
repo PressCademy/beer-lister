@@ -3,7 +3,7 @@
 namespace Beer_List\Loaders;
 
 use Beer_List\Abstracts\Color;
-use Underpin\Abstracts\Registries\Loader_Registry;
+use Beercore\Abstracts\Registries\Loader_Registry;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

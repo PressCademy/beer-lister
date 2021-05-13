@@ -1,0 +1,31 @@
+{
+  "name": "underpin/example",
+  "description": "Underpin Example",
+  "type": "wordpress-plugin",
+  "authors": [
+    {
+      "name": "Alex Standiford",
+      "email": "alex@designframesolutions.com"
+    }
+  ],
+  "extra": {
+    "installer-paths": {
+      "vendor/{$vendor}/{$name}": ["type:wordpress-muplugin"]
+    }
+  },
+  "require": {
+    "underpin/underpin": "^1.2",
+    "underpin/custom-post-type-loader": "*",
+    "underpin/taxonomy-loader": "*",
+    "underpin/script-loader": "^1.0",
+    "underpin/block-loader": "^1.0",
+    "underpin/meta-loader": "^1.0",
+    "underpin/rest-endpoint-loader": "^1.0",
+    "underpin/style-loader": "^1.0",
+    "underpin/debug-bar-extension": "^1.0"
+  },
+  "require-dev": {
+    "fakerphp/faker": "^1.5",
+    "underpin/compiler": "^0.1.0"
+  }
+}

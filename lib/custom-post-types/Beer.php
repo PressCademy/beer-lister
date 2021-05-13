@@ -2,7 +2,7 @@
 
 namespace Beer_List\Custom_Post_Types;
 
-use Underpin_Custom_Post_Types\Abstracts\Custom_Post_Type;
+use Beercore_Custom_Post_Types\Abstracts\Custom_Post_Type;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -136,7 +136,9 @@ class Beer extends Custom_Post_Type {
 			'type'         => 'post',
 			'show_in_rest' => true,
 			'single'       => true,
-			'has_permission_callback' => fn () => current_user_can( 'edit_posts' ),
+			'has_permission_callback' => function () {
+				return current_user_can( 'edit_posts' );
+			},
 		];
 
 		$args = wp_parse_args( $args, $defaults );
@@ -195,7 +197,9 @@ class Beer extends Custom_Post_Type {
 			'name'              => 'On Tap',
 			'default_value'     => false,
 			'field_type'        => 'boolean',
-			'sanitize_callback' => fn ( $meta_value ) => settype( $meta_value, 'boolean' ),
+			'sanitize_callback' => function ( $meta_value ) {
+				return settype( $meta_value, 'boolean' );
+			},
 		] );
 
 	}

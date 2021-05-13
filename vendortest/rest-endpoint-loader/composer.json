@@ -1,0 +1,17 @@
+{
+  "name": "underpin/rest-endpoint-loader",
+  "description": "Rest endpoint loader for Underpin",
+  "type": "library",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Alex Standiford",
+      "email": "a@alexstandiford.com"
+    }
+  ],
+  "autoload": {
+    "files": [
+      "rest-endpoints.php"
+    ]
+  }
+}

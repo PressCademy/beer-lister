@@ -1,0 +1,20 @@
+{
+  "name": "underpin/custom-post-type-loader",
+  "description": "Custom Post Type Loader for Underpin",
+  "type": "library",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Alex Standiford",
+      "email": "a@alexstandiford.com"
+    }
+  ],
+  "require": {
+    "underpin/logger-loader": "1.*"
+  },
+  "autoload": {
+    "files": [
+      "custom-post-types.php"
+    ]
+  }
+}
